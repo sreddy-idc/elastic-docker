@@ -1,0 +1,96 @@
+docker logs vpc-cw --tail 100 -f
+''
+failed: connect timed out"}
+[2022-03-29T13:54:03,073][WARN ][logstash.outputs.elasticsearch][main] Attempted to resurrect connection to dead ES instance, but got an error {:url=>"http://elastic:xxxxxx@10.8.12.119:9200/", :exception=>LogStash::Outputs::ElasticSearch::HttpClient::Pool::HostUnreachableError, :message=>"Elasticsearch Unreachable: [http://10.8.12.119:9200/][Manticore::ConnectTimeout] Connect to 10.8.12.119:9200 [/10.8.12.119]failed: connect timed out"}
+[2022-03-29T13:54:14,085][WARN ][logstash.outputs.elasticsearch][main] Attempted to resurrect connection to dead ES instance, but got an error {:url=>"http://elastic:xxxxxx@10.8.12.119:9200/", :exception=>LogStash::Outputs::ElasticSearch::HttpClient::Pool::HostUnreachableError, :message=>"Elasticsearch Unreachable: [http://10.8.12.119:9200/][Manticore::ConnectTimeout] Connect to 10.8.12.119:9200 [/10.8.12.119]failed: connect timed out"}
+''
+
+systemctl status elasticsearch
+● elasticsearch.service - Elasticsearch
+     Loaded: loaded (/usr/lib/systemd/system/elasticsearch.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2022-03-28 16:33:45 UTC; 21h ago
+       Docs: https://www.elastic.co
+   Main PID: 3746 (java)
+      Tasks: 169 (limit: 19144)
+     Memory: 11.2G
+     CGroup: /system.slice/elasticsearch.service
+             ├─3746 /usr/share/elasticsearch/jdk/bin/java -Xshare:auto -Des.networkaddress.cache.ttl=60 -Des.networkaddress.cache.negative.ttl=10 -XX:+AlwaysPreTouch -Xss1m -Djava.awt.headless=true -Dfile.e>
+             └─3941 /usr/share/elasticsearch/modules/x-pack-ml/platform/linux-x86_64/bin/controller
+
+Mar 28 16:33:25 ip-10-8-12-119 systemd[1]: Starting Elasticsearch...
+Mar 28 16:33:45 ip-10-8-12-119 systemd[1]: Started Elasticsearch.
+
+vi /var/log/elasticsearch/elk.webappuat.com.log
+''
+[2022-03-29T00:00:04,142][INFO ][o.e.c.m.MetadataCreateIndexService] [ELK-IDC-NVIRGINIA-001] [.monitoring-kibana-7-2022.03.29] creating index, cause [auto(bulk api)], templates [.monitoring-kibana], shards [1]/[0]
+[2022-03-29T00:00:07,685][INFO ][o.e.c.m.MetadataCreateIndexService] [ELK-IDC-NVIRGINIA-001] [.monitoring-es-7-2022.03.29] creating index, cause [auto(bulk api)], templates [.monitoring-es], shards [1]/[0]
+[2022-03-29T00:00:53,288][INFO ][o.e.c.m.MetadataCreateIndexService] [ELK-IDC-NVIRGINIA-001] [.watcher-history-13-2022.03.29] creating index, cause [auto(bulk api)], templates [.watch-history-13], shards [1]/[0]
+[2022-03-29T00:00:53,356][INFO ][o.e.x.i.IndexLifecycleTransition] [ELK-IDC-NVIRGINIA-001] moving index [.watcher-history-13-2022.03.29] from [null] to [{"phase":"new","action":"complete","name":"complete"}] in policy [watch-history-ilm-policy]
+[2022-03-29T00:00:53,478][INFO ][o.e.c.m.MetadataMappingService] [ELK-IDC-NVIRGINIA-001] [.watcher-history-13-2022.03.29/_2uGh6GsT4WSp58wt4umMA] update_mapping [_doc]
+[2022-03-29T00:00:53,903][INFO ][o.e.c.m.MetadataMappingService] [ELK-IDC-NVIRGINIA-001] [.watcher-history-13-2022.03.29/_2uGh6GsT4WSp58wt4umMA] update_mapping [_doc]
+[2022-03-29T00:00:53,973][INFO ][o.e.c.m.MetadataMappingService] [ELK-IDC-NVIRGINIA-001] [.watcher-history-13-2022.03.29/_2uGh6GsT4WSp58wt4umMA] update_mapping [_doc]
+[2022-03-29T01:00:00,002][INFO ][o.e.x.m.e.l.LocalExporter] [ELK-IDC-NVIRGINIA-001] cleaning up [2] old indices
+[2022-03-29T01:00:00,009][INFO ][o.e.c.m.MetadataDeleteIndexService] [ELK-IDC-NVIRGINIA-001] [.monitoring-es-7-2022.03.22/pcVwe_0VTfOVNiI1upI1UQ] deleting index
+[2022-03-29T01:00:00,010][INFO ][o.e.c.m.MetadataDeleteIndexService] [ELK-IDC-NVIRGINIA-001] [.monitoring-kibana-7-2022.03.22/UczLUAZsRbuRleclBYYzKw] deleting index
+[2022-03-29T01:18:00,001][INFO ][o.e.x.m.MlDailyMaintenanceService] [ELK-IDC-NVIRGINIA-001] triggering scheduled [ML] maintenance tasks
+[2022-03-29T01:18:00,012][INFO ][o.e.x.m.a.TransportDeleteExpiredDataAction] [ELK-IDC-NVIRGINIA-001] Deleting expired data
+[2022-03-29T01:18:00,079][INFO ][o.e.x.m.j.r.UnusedStatsRemover] [ELK-IDC-NVIRGINIA-001] Successfully deleted [0] unused stats documents
+[2022-03-29T01:18:00,080][INFO ][o.e.x.m.a.TransportDeleteExpiredDataAction] [ELK-IDC-NVIRGINIA-001] Completed deletion of expired ML data
+[2022-03-29T01:18:00,081][INFO ][o.e.x.m.MlDailyMaintenanceService] [ELK-IDC-NVIRGINIA-001] Successfully completed [ML] maintenance task: triggerDeleteExpiredDataTask
+[2022-03-29T01:30:00,007][INFO ][o.e.x.s.SnapshotRetentionTask] [ELK-IDC-NVIRGINIA-001] starting SLM retention snapshot cleanup task
+[2022-03-29T01:30:00,011][INFO ][o.e.x.s.SnapshotRetentionTask] [ELK-IDC-NVIRGINIA-001] there are no repositories to fetch, SLM retention snapshot cleanup task completech.yml
+''
+
+cat /etc/elasticsearch/elasticsearch.yml
+''
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
+xpack.security.authc.api_key.enabled: true
+cluster.name: "elk.webappuat.com"
+node.name: ELK-IDC-NVIRGINIA-001
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+network.host: 10.8.12.119
+discovery.type: single-node
+''
+
+cat logstash.yml
+''
+http.host: "0.0.0.0"
+''
+
+cat 1-input.conf
+
+input {
+ beats {
+    port => 5044
+ }
+ cloudwatch_logs {
+        log_group => [ "VPC-IDC-DEV-NVIRGINIA" ]
+        access_key_id => "***"
+        secret_access_key => "***"
+      }
+cloudwatch_logs {
+        log_group => [ "VPC-SECURITY" ]
+        access_key_id => "***"
+        secret_access_key => "***"
+      }
+cloudwatch_logs {
+        log_group => [ "VPC-IDC-PROD-NVIRGINIA" ]
+        access_key_id => "***"
+        secret_access_key => "***"
+      }
+   }
+   
+   cat 99-output.conf
+   
+output {
+elasticsearch {
+hosts=> ["http://10.8.12.119:9200"]
+index => "vpc-cw-logs-%{+YYYY.MM.dd}"
+user => "elastic"
+password => "***"
+
+}
+}
+root@ip-10-8-12-119:~/vpc-logs/pipeline#
